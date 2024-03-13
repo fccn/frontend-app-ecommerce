@@ -12,6 +12,7 @@ import ptbrMessages from './messages/pt_br.json';
 import ruMessages from './messages/ru.json';
 import thMessages from './messages/th.json';
 import ukMessages from './messages/uk.json';
+import ptPTMessages from './messages/pt_PT.json';
 
 const messages = {
   ar: arMessages,
@@ -24,6 +25,7 @@ const messages = {
   'ko-kr': kokrMessages,
   pl: plMessages,
   'pt-br': ptbrMessages,
+  'pt-pt': ptPTMessages,
   ru: ruMessages,
   th: thMessages,
   uk: ukMessages,
