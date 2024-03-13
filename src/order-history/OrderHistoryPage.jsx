@@ -103,10 +103,10 @@ class OrderHistoryPage extends React.Component {
             label: this.props.intl.formatMessage(messages['ecommerce.order.history.table.column.date.placed']),
             key: 'datePlaced',
           },
-          {
-            label: this.props.intl.formatMessage(messages['ecommerce.order.history.table.column.total.cost']),
-            key: 'total',
-          },
+          // {
+          //   label: this.props.intl.formatMessage(messages['ecommerce.order.history.table.column.total.cost']),
+          //   key: 'total',
+          // },
           {
             label: this.props.intl.formatMessage(messages['ecommerce.order.history.table.column.order.number']),
             key: 'orderId',
