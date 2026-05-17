@@ -46,6 +46,40 @@ const messages = defineMessages({
     defaultMessage: 'Order details',
     description: 'The column label for Order details in the order history table.',
   },
+  'ecommerce.order.history.table.column.status': {
+    id: 'ecommerce.order.history.table.column.status',
+    defaultMessage: 'Status',
+    description: 'The column label for the payment status of the order in the order history table.',
+  },
+  'ecommerce.order.history.table.column.actions': {
+    id: 'ecommerce.order.history.table.column.actions',
+    defaultMessage: 'Actions',
+    description: 'The column label for the per-row action buttons of the order history table.',
+  },
+  'ecommerce.order.history.status.paid': {
+    id: 'ecommerce.order.history.status.paid',
+    defaultMessage: 'Paid',
+    description: 'Status label displayed for an order whose payment is confirmed.',
+  },
+  'ecommerce.order.history.status.pending': {
+    id: 'ecommerce.order.history.status.pending',
+    defaultMessage: 'Pending payment',
+    description:
+      'Status label displayed for an order whose asynchronous payment has not '
+      + 'yet been confirmed by the payment processor.',
+  },
+  'ecommerce.order.history.status.failed': {
+    id: 'ecommerce.order.history.status.failed',
+    defaultMessage: 'Payment failed',
+    description: 'Status label displayed for an order whose payment failed.',
+  },
+  'ecommerce.order.history.go.to.resource': {
+    id: 'ecommerce.order.history.go.to.resource',
+    defaultMessage: 'Go to course',
+    description:
+      'Label of the action button that takes the user to the course (resource) '
+      + 'purchased through this order.',
+  },
 });
 
 export default messages;

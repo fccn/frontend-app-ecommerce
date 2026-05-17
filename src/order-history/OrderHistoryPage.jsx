@@ -18,6 +18,7 @@ import messages from './OrderHistoryPage.messages';
 // Actions
 import { fetchOrders } from './actions';
 import { pageSelector } from './selectors';
+import { fetchBasketPaymentStatus } from './service';
 
 /**
  * TEMPORARY
@@ -37,6 +38,59 @@ class OrderHistoryPage extends React.Component {
     super(props);
 
     this.handlePageSelect = this.handlePageSelect.bind(this);
+    this.state = {
+      // Per-order lazily-resolved status overrides keyed by order_number. As
+      // soon as `BasketPaymentStatusView` returns a fresher status for a row
+      // we keep it here so the table re-renders without waiting for the next
+      // page reload.
+      statusOverrides: {},
+      courseUrlOverrides: {},
+    };
+  }
+
+  componentDidMount() {
+    this.resolvePendingOrders();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.orders !== this.props.orders) {
+      this.resolvePendingOrders();
+    }
+  }
+
+  /**
+   * Triggers a lazy `BasketPaymentStatusView` call for every order in the
+   * current page whose status is not yet `paid`. This is the single place
+   * where the upstream payment processor is consulted, in line with the
+   * "no background job" requirement: the consultation happens when (and
+   * only when) the user is looking at the Order History page.
+   */
+  async resolvePendingOrders() {
+    const pending = (this.props.orders || []).filter(
+      o => this.getStatus(o) !== 'paid',
+    );
+    await Promise.all(pending.map(async (order) => {
+      const data = await fetchBasketPaymentStatus(order.orderId);
+      if (!data) { return; }
+      this.setState(prev => ({
+        statusOverrides: {
+          ...prev.statusOverrides,
+          [order.orderId]: data.status,
+        },
+        courseUrlOverrides: {
+          ...prev.courseUrlOverrides,
+          [order.orderId]: data.course_url || prev.courseUrlOverrides[order.orderId] || '',
+        },
+      }));
+    }));
+  }
+
+  getStatus(order) {
+    return this.state.statusOverrides[order.orderId] || order.status || 'paid';
+  }
+
+  getCourseUrl(order) {
+    return this.state.courseUrlOverrides[order.orderId] || order.courseUrl || '';
   }
 
   handlePageSelect(page) {
@@ -44,26 +98,60 @@ class OrderHistoryPage extends React.Component {
     this.props.fetchOrders(page);
   }
 
-  getTableData() {
-    return this.props.orders.map(({
-      lineItems,
-      datePlaced,
-      total,
-      currency,
-      orderId,
-      receiptUrl,
-    }) => ({
-      description: this.renderLineItems(lineItems),
-      datePlaced: <FormattedDate value={new Date(datePlaced)} />,
-      // eslint-disable-next-line react/style-prop-object
-      total: <FormattedNumber value={total} style="currency" currency={currency} />,
-      receiptUrl: (
-        <Hyperlink destination={receiptUrl}>
+  renderStatusBadge(status) {
+    const labelKey = ({
+      paid: 'ecommerce.order.history.status.paid',
+      pending: 'ecommerce.order.history.status.pending',
+      failed: 'ecommerce.order.history.status.failed',
+    })[status] || 'ecommerce.order.history.status.pending';
+    return (
+      <span
+        className={`badge badge-status badge-status-${status}`}
+        data-testid={`order-status-${status}`}
+      >
+        {this.props.intl.formatMessage(messages[labelKey])}
+      </span>
+    );
+  }
+
+  renderActions(order) {
+    const status = this.getStatus(order);
+    if (status !== 'paid') { return null; }
+    const courseUrl = this.getCourseUrl(order);
+    return (
+      <span className="d-flex flex-wrap" style={{ gap: '0.5rem' }}>
+        <Hyperlink destination={order.receiptUrl} data-testid="order-details-link">
           {this.props.intl.formatMessage(messages['ecommerce.order.history.view.order.detail'])}
         </Hyperlink>
-      ),
-      orderId,
-    }), this);
+        {courseUrl ? (
+          <Hyperlink destination={courseUrl} data-testid="go-to-resource-link">
+            {this.props.intl.formatMessage(messages['ecommerce.order.history.go.to.resource'])}
+          </Hyperlink>
+        ) : null}
+      </span>
+    );
+  }
+
+  getTableData() {
+    return this.props.orders.map((order) => {
+      const {
+        lineItems,
+        datePlaced,
+        total,
+        currency,
+        orderId,
+      } = order;
+      const status = this.getStatus(order);
+      return {
+        description: this.renderLineItems(lineItems),
+        datePlaced: <FormattedDate value={new Date(datePlaced)} />,
+        // eslint-disable-next-line react/style-prop-object
+        total: <FormattedNumber value={total} style="currency" currency={currency} />,
+        status: this.renderStatusBadge(status),
+        actions: this.renderActions(order),
+        orderId,
+      };
+    }, this);
   }
 
   renderPagination() {
@@ -120,8 +208,12 @@ class OrderHistoryPage extends React.Component {
             accessor: 'orderId',
           },
           {
-            Header: this.props.intl.formatMessage(messages['ecommerce.order.history.table.column.order.details']),
-            accessor: 'receiptUrl',
+            Header: this.props.intl.formatMessage(messages['ecommerce.order.history.table.column.status']),
+            accessor: 'status',
+          },
+          {
+            Header: this.props.intl.formatMessage(messages['ecommerce.order.history.table.column.actions']),
+            accessor: 'actions',
           },
         ]}
       >
@@ -132,7 +224,7 @@ class OrderHistoryPage extends React.Component {
 
   renderMobileOrdersTable() {
     return this.getTableData().map(({
-      description, datePlaced, total, orderId, receiptUrl,
+      description, datePlaced, total, orderId, status, actions,
     }) => (
       <div className="border-bottom py-3" key={orderId}>
         <dl>
@@ -152,8 +244,12 @@ class OrderHistoryPage extends React.Component {
             {this.props.intl.formatMessage(messages['ecommerce.order.history.table.column.order.number'])}
           </dt>
           <dd>{orderId}</dd>
+          <dt>
+            {this.props.intl.formatMessage(messages['ecommerce.order.history.table.column.status'])}
+          </dt>
+          <dd>{status}</dd>
         </dl>
-        <p>{receiptUrl}</p>
+        {actions ? <p>{actions}</p> : null}
       </div>
     ));
   }
@@ -221,6 +317,8 @@ OrderHistoryPage.propTypes = {
     orderId: PropTypes.string,
     receiptUrl: PropTypes.string,
     currency: PropTypes.string,
+    status: PropTypes.string,
+    courseUrl: PropTypes.string,
     lineItems: PropTypes.arrayOf(PropTypes.shape({
       title: PropTypes.string,
       quantity: PropTypes.number,
