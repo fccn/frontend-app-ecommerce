@@ -21,6 +21,7 @@ import configureStore from './store';
 import { NotFoundPage } from './components';
 import { OrdersAndSubscriptionsPage } from './orders-and-subscriptions';
 import { ManageSubscriptionsPage } from './subscriptions';
+import ThankYouPage from './thank-you';
 
 import './index.scss';
 
@@ -59,6 +60,7 @@ subscribe(APP_READY, () => {
             />
           ) : null}
           <Route path="/orders" element={<OrdersAndSubscriptionsPage />} />
+          <Route path="/thank-you" element={<ThankYouPage />} />
           <Route path="/notfound" element={<NotFoundPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
