@@ -8,7 +8,10 @@ import {
   FormattedDate,
   FormattedNumber,
 } from '@edx/frontend-platform/i18n';
-import { DataTable, Hyperlink, Pagination } from '@openedx/paragon';
+import {
+  Badge, DataTable, Hyperlink, Pagination,
+} from '@openedx/paragon';
+import { Receipt } from '@openedx/paragon/icons';
 import MediaQuery from 'react-responsive';
 
 import { PageLoading } from '../components';
@@ -18,6 +21,8 @@ import messages from './OrderHistoryPage.messages';
 // Actions
 import { fetchOrders } from './actions';
 import { pageSelector } from './selectors';
+import { fetchOrderPaymentStatus } from './service';
+import { isPaid, isPending, statusPresentation } from './orderStatus';
 
 /**
  * TEMPORARY
@@ -37,6 +42,19 @@ class OrderHistoryPage extends React.Component {
     super(props);
 
     this.handlePageSelect = this.handlePageSelect.bind(this);
+    this.state = {
+      statusOverrides: {},
+    };
+  }
+
+  componentDidMount() {
+    this.resolvePendingOrders();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.orders !== this.props.orders) {
+      this.resolvePendingOrders();
+    }
   }
 
   handlePageSelect(page) {
@@ -44,26 +62,77 @@ class OrderHistoryPage extends React.Component {
     this.props.fetchOrders(page);
   }
 
+  getStatus(order) {
+    return this.state.statusOverrides[order.orderId] || order.status;
+  }
+
   getTableData() {
-    return this.props.orders.map(({
-      lineItems,
-      datePlaced,
-      total,
-      currency,
-      orderId,
-      receiptUrl,
-    }) => ({
-      description: this.renderLineItems(lineItems),
-      datePlaced: <FormattedDate value={new Date(datePlaced)} />,
-      // eslint-disable-next-line react/style-prop-object
-      total: <FormattedNumber value={total} style="currency" currency={currency} />,
-      receiptUrl: (
-        <Hyperlink destination={receiptUrl}>
-          {this.props.intl.formatMessage(messages['ecommerce.order.history.view.order.detail'])}
-        </Hyperlink>
-      ),
-      orderId,
-    }), this);
+    return this.props.orders.map((order) => {
+      const {
+        lineItems,
+        datePlaced,
+        total,
+        currency,
+        orderId,
+        receiptUrl,
+      } = order;
+      const status = this.getStatus(order);
+      return {
+        description: this.renderLineItems(lineItems),
+        datePlaced: <FormattedDate value={new Date(datePlaced)} />,
+        // eslint-disable-next-line react/style-prop-object
+        total: <FormattedNumber value={total} style="currency" currency={currency} />,
+        status: this.renderStatusBadge(status),
+        orderId,
+        receipt: (isPaid(status) && receiptUrl) ? this.renderReceiptIcon(receiptUrl) : null,
+      };
+    }, this);
+  }
+
+  /**
+   * Resolve every pending order on the current page.
+   *
+   * This is the whole asynchronous-payment mechanism: there is no polling and no
+   * background job. Opening this page asks ecommerce, once per pending order,
+   * whether PayGate has received the payment yet. An order that has been paid is
+   * fulfilled server-side during that call and comes back as `Complete`.
+   */
+  async resolvePendingOrders() {
+    const pending = (this.props.orders || []).filter(order => isPending(this.getStatus(order)));
+
+    await Promise.all(pending.map(async (order) => {
+      const data = await fetchOrderPaymentStatus(order.orderId);
+      if (!data || !data.status) { return; }
+      this.setState(prev => ({
+        statusOverrides: {
+          ...prev.statusOverrides,
+          [order.orderId]: data.status,
+        },
+      }));
+    }));
+  }
+
+  renderStatusBadge(status) {
+    const { messageKey, variant } = statusPresentation(status);
+    return (
+      <Badge variant={variant} data-testid={`order-status-${variant}`}>
+        {this.props.intl.formatMessage(messages[messageKey])}
+      </Badge>
+    );
+  }
+
+  renderReceiptIcon(receiptUrl) {
+    // Use the project's Paragon icon set instead of an inline SVG
+    return (
+      <Hyperlink
+        destination={receiptUrl}
+        className="order-receipt-link"
+        data-testid="order-receipt-link"
+        aria-label={this.props.intl.formatMessage(messages['ecommerce.order.history.view.order.detail'])}
+      >
+        <Receipt size={16} aria-hidden />
+      </Hyperlink>
+    );
   }
 
   renderPagination() {
@@ -120,8 +189,16 @@ class OrderHistoryPage extends React.Component {
             accessor: 'orderId',
           },
           {
-            Header: this.props.intl.formatMessage(messages['ecommerce.order.history.table.column.order.details']),
-            accessor: 'receiptUrl',
+            Header: this.props.intl.formatMessage(messages['ecommerce.order.history.table.column.status']),
+            accessor: 'status',
+          },
+          {
+            Header: '',
+            accessor: 'receipt',
+            // ensure this column is right aligned in styles
+            headerClassName: 'text-right',
+            className: 'text-right',
+            width: 50,
           },
         ]}
       >
@@ -132,7 +209,7 @@ class OrderHistoryPage extends React.Component {
 
   renderMobileOrdersTable() {
     return this.getTableData().map(({
-      description, datePlaced, total, orderId, receiptUrl,
+      description, datePlaced, total, orderId, status, receipt,
     }) => (
       <div className="border-bottom py-3" key={orderId}>
         <dl>
@@ -152,8 +229,12 @@ class OrderHistoryPage extends React.Component {
             {this.props.intl.formatMessage(messages['ecommerce.order.history.table.column.order.number'])}
           </dt>
           <dd>{orderId}</dd>
+          <dt>
+            {this.props.intl.formatMessage(messages['ecommerce.order.history.table.column.status'])}
+          </dt>
+          <dd>{status}</dd>
+          <dd className="text-right">{receipt}</dd>
         </dl>
-        <p>{receiptUrl}</p>
       </div>
     ));
   }
@@ -221,6 +302,7 @@ OrderHistoryPage.propTypes = {
     orderId: PropTypes.string,
     receiptUrl: PropTypes.string,
     currency: PropTypes.string,
+    status: PropTypes.string,
     lineItems: PropTypes.arrayOf(PropTypes.shape({
       title: PropTypes.string,
       quantity: PropTypes.number,

@@ -52,6 +52,444 @@ exports[`<OrderHistoryPage /> Renders correctly in various states renders orders
     Order History
   </h1>
   <div>
+    <div
+      class="border-bottom py-3"
+    >
+      <dl>
+        <dt>
+          Items
+        </dt>
+        <dd>
+          <p
+            class="d-flex"
+          >
+            <span
+              class="mr-3"
+            >
+              1
+              ×
+            </span>
+            <span>
+              Seat in Introduction to Urology with honor certificate
+            </span>
+          </p>
+        </dd>
+        <dt>
+          Date placed
+        </dt>
+        <dd>
+          1/26/2016
+        </dd>
+        <dt>
+          Total cost
+        </dt>
+        <dd>
+          $0.00
+        </dd>
+        <dt>
+          Order number
+        </dt>
+        <dd>
+          EDX-101706
+        </dd>
+        <dt>
+          Status
+        </dt>
+        <dd>
+          <span
+            class="badge badge-success"
+            data-testid="order-status-success"
+          >
+            Paid
+          </span>
+        </dd>
+        <dd
+          class="text-right"
+        />
+      </dl>
+    </div>
+    <div
+      class="border-bottom py-3"
+    >
+      <dl>
+        <dt>
+          Items
+        </dt>
+        <dd>
+          <p
+            class="d-flex"
+          >
+            <span
+              class="mr-3"
+            >
+              1
+              ×
+            </span>
+            <span>
+              Seat in "Dracula" by Stoker: BerkeleyX Book Club with honor certificate
+            </span>
+          </p>
+        </dd>
+        <dt>
+          Date placed
+        </dt>
+        <dd>
+          12/2/2015
+        </dd>
+        <dt>
+          Total cost
+        </dt>
+        <dd>
+          $0.00
+        </dd>
+        <dt>
+          Order number
+        </dt>
+        <dd>
+          EDX-101403
+        </dd>
+        <dt>
+          Status
+        </dt>
+        <dd>
+          <span
+            class="badge badge-success"
+            data-testid="order-status-success"
+          >
+            Paid
+          </span>
+        </dd>
+        <dd
+          class="text-right"
+        />
+      </dl>
+    </div>
+    <div
+      class="border-bottom py-3"
+    >
+      <dl>
+        <dt>
+          Items
+        </dt>
+        <dd>
+          <p
+            class="d-flex"
+          >
+            <span
+              class="mr-3"
+            >
+              1
+              ×
+            </span>
+            <span>
+              Seat in Demo Course with honor certificate
+            </span>
+          </p>
+        </dd>
+        <dt>
+          Date placed
+        </dt>
+        <dd>
+          9/30/2015
+        </dd>
+        <dt>
+          Total cost
+        </dt>
+        <dd>
+          $0.00
+        </dd>
+        <dt>
+          Order number
+        </dt>
+        <dd>
+          EDX-100784
+        </dd>
+        <dt>
+          Status
+        </dt>
+        <dd>
+          <span
+            class="badge badge-success"
+            data-testid="order-status-success"
+          >
+            Paid
+          </span>
+        </dd>
+        <dd
+          class="text-right"
+        />
+      </dl>
+    </div>
+    <div
+      class="pgn__data-table-layout-wrapper"
+    >
+      <div
+        class="pgn__data-table-layout-main"
+      >
+        <div
+          class="pgn__data-table-wrapper"
+        >
+          <div
+            class="pgn__data-table-container"
+            data-testid="data-table-container"
+          >
+            <table
+              class="pgn__data-table is-striped"
+              role="table"
+            >
+              <thead>
+                <tr
+                  role="row"
+                >
+                  <th
+                    colspan="1"
+                    role="columnheader"
+                  >
+                    <span
+                      class="d-flex align-items-center"
+                    >
+                      <span>
+                        Items
+                      </span>
+                    </span>
+                  </th>
+                  <th
+                    colspan="1"
+                    role="columnheader"
+                  >
+                    <span
+                      class="d-flex align-items-center"
+                    >
+                      <span>
+                        Date placed
+                      </span>
+                    </span>
+                  </th>
+                  <th
+                    colspan="1"
+                    role="columnheader"
+                  >
+                    <span
+                      class="d-flex align-items-center"
+                    >
+                      <span>
+                        Total cost
+                      </span>
+                    </span>
+                  </th>
+                  <th
+                    colspan="1"
+                    role="columnheader"
+                  >
+                    <span
+                      class="d-flex align-items-center"
+                    >
+                      <span>
+                        Order number
+                      </span>
+                    </span>
+                  </th>
+                  <th
+                    colspan="1"
+                    role="columnheader"
+                  >
+                    <span
+                      class="d-flex align-items-center"
+                    >
+                      <span>
+                        Status
+                      </span>
+                    </span>
+                  </th>
+                  <th
+                    colspan="1"
+                    role="columnheader"
+                  >
+                    <span
+                      class="d-flex align-items-center text-right"
+                    >
+                      <span />
+                    </span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody
+                role="rowgroup"
+              >
+                <tr
+                  class="pgn__data-table-row"
+                  role="row"
+                >
+                  <td
+                    class="pgn__data-table-cell-wrap"
+                    role="cell"
+                  >
+                    <p
+                      class="d-flex"
+                    >
+                      <span
+                        class="mr-3"
+                      >
+                        1
+                        ×
+                      </span>
+                      <span>
+                        Seat in Introduction to Urology with honor certificate
+                      </span>
+                    </p>
+                  </td>
+                  <td
+                    class="pgn__data-table-cell-wrap"
+                    role="cell"
+                  >
+                    1/26/2016
+                  </td>
+                  <td
+                    class="pgn__data-table-cell-wrap"
+                    role="cell"
+                  >
+                    $0.00
+                  </td>
+                  <td
+                    class="pgn__data-table-cell-wrap"
+                    role="cell"
+                  >
+                    EDX-101706
+                  </td>
+                  <td
+                    class="pgn__data-table-cell-wrap"
+                    role="cell"
+                  >
+                    <span
+                      class="badge badge-success"
+                      data-testid="order-status-success"
+                    >
+                      Paid
+                    </span>
+                  </td>
+                  <td
+                    class="pgn__data-table-cell-wrap"
+                    role="cell"
+                  />
+                </tr>
+                <tr
+                  class="pgn__data-table-row"
+                  role="row"
+                >
+                  <td
+                    class="pgn__data-table-cell-wrap"
+                    role="cell"
+                  >
+                    <p
+                      class="d-flex"
+                    >
+                      <span
+                        class="mr-3"
+                      >
+                        1
+                        ×
+                      </span>
+                      <span>
+                        Seat in "Dracula" by Stoker: BerkeleyX Book Club with honor certificate
+                      </span>
+                    </p>
+                  </td>
+                  <td
+                    class="pgn__data-table-cell-wrap"
+                    role="cell"
+                  >
+                    12/2/2015
+                  </td>
+                  <td
+                    class="pgn__data-table-cell-wrap"
+                    role="cell"
+                  >
+                    $0.00
+                  </td>
+                  <td
+                    class="pgn__data-table-cell-wrap"
+                    role="cell"
+                  >
+                    EDX-101403
+                  </td>
+                  <td
+                    class="pgn__data-table-cell-wrap"
+                    role="cell"
+                  >
+                    <span
+                      class="badge badge-success"
+                      data-testid="order-status-success"
+                    >
+                      Paid
+                    </span>
+                  </td>
+                  <td
+                    class="pgn__data-table-cell-wrap"
+                    role="cell"
+                  />
+                </tr>
+                <tr
+                  class="pgn__data-table-row"
+                  role="row"
+                >
+                  <td
+                    class="pgn__data-table-cell-wrap"
+                    role="cell"
+                  >
+                    <p
+                      class="d-flex"
+                    >
+                      <span
+                        class="mr-3"
+                      >
+                        1
+                        ×
+                      </span>
+                      <span>
+                        Seat in Demo Course with honor certificate
+                      </span>
+                    </p>
+                  </td>
+                  <td
+                    class="pgn__data-table-cell-wrap"
+                    role="cell"
+                  >
+                    9/30/2015
+                  </td>
+                  <td
+                    class="pgn__data-table-cell-wrap"
+                    role="cell"
+                  >
+                    $0.00
+                  </td>
+                  <td
+                    class="pgn__data-table-cell-wrap"
+                    role="cell"
+                  >
+                    EDX-100784
+                  </td>
+                  <td
+                    class="pgn__data-table-cell-wrap"
+                    role="cell"
+                  >
+                    <span
+                      class="badge badge-success"
+                      data-testid="order-status-success"
+                    >
+                      Paid
+                    </span>
+                  </td>
+                  <td
+                    class="pgn__data-table-cell-wrap"
+                    role="cell"
+                  />
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
     <nav
       aria-label="pagination navigation"
       class="pagination-margin pagination-default"
@@ -72,63 +510,69 @@ exports[`<OrderHistoryPage /> Renders correctly in various states renders orders
         >
           <button
             aria-label="Previous, Page 1"
-            class="previous page-link btn btn-primary"
+            class="previous page-link btn btn-tertiary"
             type="button"
           >
-            <div>
-              <span
-                class="pgn__icon"
+            <span
+              class="pgn__icon btn-icon-before"
+            >
+              <svg
+                aria-hidden="true"
+                fill="none"
+                focusable="false"
+                height="24"
+                role="img"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  aria-hidden="true"
-                  fill="none"
-                  focusable="false"
-                  height="24"
-                  role="img"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
-                    fill="currentColor"
-                  />
-                </svg>
-              </span>
-              Previous
-            </div>
+                <path
+                  d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+            Previous
           </button>
+        </li>
+        <li
+          class="page-item disabled"
+        >
+          <span
+            aria-label="Page 2, Current Page, of 10"
+            class="btn page-link page-of-count"
+          >
+            2 of 10
+          </span>
         </li>
         <li
           class="page-item"
         >
           <button
             aria-label="Next, Page 3"
-            class="next page-link btn btn-primary"
+            class="previous page-link btn btn-tertiary"
             type="button"
           >
-            <div>
-              Next
-              <span
-                class="pgn__icon"
+            Next
+            <span
+              class="pgn__icon btn-icon-after"
+            >
+              <svg
+                aria-hidden="true"
+                fill="none"
+                focusable="false"
+                height="24"
+                role="img"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  aria-hidden="true"
-                  fill="none"
-                  focusable="false"
-                  height="24"
-                  role="img"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
-                    fill="currentColor"
-                  />
-                </svg>
-              </span>
-            </div>
+                <path
+                  d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
           </button>
         </li>
       </ul>

@@ -46,6 +46,35 @@ const messages = defineMessages({
     defaultMessage: 'Order details',
     description: 'The column label for Order details in the order history table.',
   },
+  'ecommerce.order.history.table.column.status': {
+    id: 'ecommerce.order.history.table.column.status',
+    defaultMessage: 'Status',
+    description: 'The column label for the payment status of the order in the order history table.',
+  },
+  'ecommerce.order.history.status.paid': {
+    id: 'ecommerce.order.history.status.paid',
+    defaultMessage: 'Paid',
+    description: 'Status label displayed for an order whose payment is confirmed.',
+  },
+  'ecommerce.order.history.status.pending': {
+    id: 'ecommerce.order.history.status.pending',
+    defaultMessage: 'Awaiting payment',
+    description:
+      'Status label displayed for an order whose payment has not been confirmed '
+      + 'yet, such as an unpaid Multibanco reference.',
+  },
+  'ecommerce.order.history.status.failed': {
+    id: 'ecommerce.order.history.status.failed',
+    defaultMessage: 'Payment failed',
+    description: 'Status label displayed for an order whose payment failed.',
+  },
+  'ecommerce.order.history.status.fulfillment.error': {
+    id: 'ecommerce.order.history.status.fulfillment.error',
+    defaultMessage: 'Paid, enrolment pending',
+    description:
+      'Status label displayed for an order that has been paid but whose enrolment '
+      + 'could not be completed yet.',
+  },
 });
 
 export default messages;
